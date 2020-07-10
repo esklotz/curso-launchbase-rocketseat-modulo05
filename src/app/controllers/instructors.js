@@ -3,9 +3,19 @@ const instructor = require('../models/instructor')
 
 module.exports = {
     index(req, res) {
-        instructor.all(function(instructors) {
-            return res.render("instructors/index", {instructors})
+
+        const {filter} = req.query 
+        
+        if (filter) {
+            instructor.findBy(filter, function(instrutor) {
+                return res.render("instructors/index", {instrutor, filter})
             })
+        } else {
+            instructor.all(function(instrutor) {
+                return res.render("instructors/index", {instrutor})
+            })
+        }
+       
     },
     post(req, res) {
         const keys = Object.keys(req.body)
@@ -22,26 +32,26 @@ module.exports = {
 
     },
     show(req, res) {
-       instructor.find(req.params.id, function(instructor){
-           if(!instructor) return res.send("Instructor not found!")
+       instructor.find(req.params.id, function(instrutor){
+           if(!instrutor) return res.send("Instructor not found!")
 
-           instructor.age = age(instructor.birth)
-           instructor.services = instructor.services.split(",")
-           instructor.created_at = date(instructor.created_at).format
+           instrutor.age = age(instrutor.birth)
+           instrutor.services = instrutor.services.split(",")
+           instrutor.created_at = date(instrutor.created_at).format
 
-           return res.render("instructors/show", {instructor})
+           return res.render("instructors/show", {instrutor})
        })
     },
     create(req, res) {
         return res.render("instructors/create")
     },
     edit(req, res) {
-        instructor.find(req.params.id, function(instructor){
-            if(!instructor) return res.send("Instructor not found!")
+        instructor.find(req.params.id, function(instrutor){
+            if(!instrutor) return res.send("Instructor not found!")
  
-            instructor.birth = date(instructor.birth).iso
+            instrutor.birth = date(instrutor.birth).iso
           
-            return res.render("instructors/edit", {instructor})
+            return res.render("instructors/edit", {instrutor})
         })
     },
     put(req, res) {

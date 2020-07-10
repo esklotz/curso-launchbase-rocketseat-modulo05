@@ -31,15 +31,20 @@ module.exports = {
        })
     },
     create(req, res) {
-        return res.render("members/create")
+        member.instructorsSelectOptions(function(options){
+            return res.render("members/create", {instructorOptions: options})
+        })
+        
     },
     edit(req, res) {
-        member.find(req.params.id, function(member){
-            if(!member) return res.send("member not found!")
+        member.find(req.params.id, function(membro){
+            if(!membro) return res.send("member not found!")
  
-            member.birth = date(member.birth).iso
+            membro.birth = date(membro.birth).iso
           
-            return res.render("members/edit", {member})
+        member.instructorsSelectOptions(function(options){
+            return res.render('members/edit', {membro, instructorOptions: options})
+            })
         })
     },
     put(req, res) {

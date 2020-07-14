@@ -3,9 +3,27 @@ const member = require('../models/member')
 
 module.exports = {
     index(req, res) {
-        member.all(function(members) {
-            return res.render("members/index", {members})
-            })
+        let {filter, page, limit} = req.query 
+
+        page = page || 1
+        limit = limit || 2
+        let offset = limit * (page - 1)
+
+        const params = {
+            filter,
+            page,
+            limit,
+            offset,
+            callback(membros) {
+                const pagination = {
+                    total: Math.ceil(membros[0].total / limit),
+                    page
+                }
+                return res.render("members/index", {membros, pagination, filter})
+            }
+        }
+
+        member.paginate(params)
     },
     post(req, res) {
         const keys = Object.keys(req.body)

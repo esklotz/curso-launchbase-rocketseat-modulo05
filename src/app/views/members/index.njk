@@ -32,13 +32,19 @@
                     <tr>
                         <td> <span style="background-image: url({{member.avatar_url}}) "> </span> {{member.name}} </td>
                         <td> {{member.email}} </td>
-                        <td> {{member.weight}}Kg </td>
-                        <td> {{member.height}}Cm </td>
+                        <td> {{member.weight}}kg </td>
+                        <td> {{member.height}}cm </td>
                         <td> <a href="/members/{{member.id}}"> Ver </a> </td>
                     </tr>
                 {% endfor %} 
             </tbody>
         </table>
+
+         {% if membros.length == 0 %}
+            <div class="noresults">
+                Nenhum resultado encontrado!
+            </div>
+        {% endif %}
 
         <div class="pagination"
             data-page={{pagination.page}}

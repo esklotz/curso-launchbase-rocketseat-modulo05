@@ -39,6 +39,14 @@
             </tbody>
         </table>
 
+         
+        {% if instrutores.length == 0 %}
+            <div class="noresults">
+                Nenhum resultado encontrado!
+            </div>
+        {% endif %}
+
+
         <div class="pagination"
             data-page={{pagination.page}}
             data-total={{pagination.total}}

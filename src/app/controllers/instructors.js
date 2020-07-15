@@ -15,8 +15,16 @@ module.exports = {
             limit,
             offset,
             callback(instrutores) {
+
+                let totalInstrutores
+                if(instrutores.length > 0 ){
+                    totalInstrutores = instrutores[0].total
+                } else {
+                    totalInstrutores = 0
+                }
+                
                 const pagination = {
-                    total: Math.ceil(instrutores[0].total / limit),
+                    total: Math.ceil(totalInstrutores / limit),
                     page
                 }
                 return res.render("instructors/index", {instrutores, pagination, filter})
